@@ -132,6 +132,26 @@ docker compose down
 
 El esquema SQL se aplica automáticamente al iniciar PostgreSQL, montando `db/schema.sql` en `docker-entrypoint-initdb.d`.
 
+
+### Errores comunes (Windows)
+
+Si ves `ERR_UNSUPPORTED_DIR_IMPORT` apuntando a `middleware/auth.js`, normalmente hay un conflicto local con una carpeta antigua llamada `auth.js`.
+
+Solución:
+
+```powershell
+cd backend\node
+# elimina artefactos locales antiguos (si existen)
+rmdir .\middleware\auth.js -Recurse -Force
+rmdir .\middleware\validate.js -Recurse -Force
+
+# reinstala dependencias
+npm install
+npm start
+```
+
+> Nota: en esta versión, los imports de middlewares usan archivos explícitos `*.middleware.js` para evitar este conflicto.
+
 ---
 
 ## Roadmap sugerido para producción

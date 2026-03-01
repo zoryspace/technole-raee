@@ -1,7 +1,7 @@
 import { Router } from "express";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
-import { validate } from "../middleware/validate.js";
+import { validate } from "../middleware/validate.middleware.js";
 import { authQuerySchema, loginBodySchema } from "../validators/auth.js";
 
 export const authRouter = Router();
