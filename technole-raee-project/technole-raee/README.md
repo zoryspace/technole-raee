@@ -106,6 +106,32 @@ SECRET_KEY=tu_secreto_aqui
 El esquema SQL está en `backend/node/db/schema.sql`.
 Compatible con PostgreSQL 14+ y también con SQLite para desarrollo local.
 
+
+## Despliegue local de Node (Docker)
+
+Para levantar un entorno **desplegable en este equipo** (API + PostgreSQL) sin instalar PostgreSQL local:
+
+```bash
+cd backend/node
+cp .env.example .env
+# (opcional) ajusta JWT_SECRET y FRONTEND_URL
+docker compose up --build -d
+```
+
+Servicios:
+- API: `http://localhost:3001`
+- Health: `http://localhost:3001/health`
+- PostgreSQL: `localhost:5432`
+
+Parar servicios:
+
+```bash
+cd backend/node
+docker compose down
+```
+
+El esquema SQL se aplica automáticamente al iniciar PostgreSQL, montando `db/schema.sql` en `docker-entrypoint-initdb.d`.
+
 ---
 
 ## Roadmap sugerido para producción
