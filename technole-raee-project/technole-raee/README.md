@@ -106,6 +106,52 @@ SECRET_KEY=tu_secreto_aqui
 El esquema SQL está en `backend/node/db/schema.sql`.
 Compatible con PostgreSQL 14+ y también con SQLite para desarrollo local.
 
+
+## Despliegue local de Node (Docker)
+
+Para levantar un entorno **desplegable en este equipo** (API + PostgreSQL) sin instalar PostgreSQL local:
+
+```bash
+cd backend/node
+cp .env.example .env
+# (opcional) ajusta JWT_SECRET y FRONTEND_URL
+docker compose up --build -d
+```
+
+Servicios:
+- API: `http://localhost:3001`
+- Health: `http://localhost:3001/health`
+- PostgreSQL: `localhost:5432`
+
+Parar servicios:
+
+```bash
+cd backend/node
+docker compose down
+```
+
+El esquema SQL se aplica automáticamente al iniciar PostgreSQL, montando `db/schema.sql` en `docker-entrypoint-initdb.d`.
+
+
+### Errores comunes (Windows)
+
+Si ves `ERR_UNSUPPORTED_DIR_IMPORT` apuntando a `middleware/auth.js`, normalmente hay un conflicto local con una carpeta antigua llamada `auth.js`.
+
+Solución:
+
+```powershell
+cd backend\node
+# elimina artefactos locales antiguos (si existen)
+rmdir .\middleware\auth.js -Recurse -Force
+rmdir .\middleware\validate.js -Recurse -Force
+
+# reinstala dependencias
+npm install
+npm start
+```
+
+> Nota: en esta versión, los imports de middlewares usan archivos explícitos `*.middleware.js` para evitar este conflicto.
+
 ---
 
 ## Roadmap sugerido para producción
